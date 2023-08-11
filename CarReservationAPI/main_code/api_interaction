@@ -1,0 +1,40 @@
+import requests
+
+class ReservationApi:
+    def __init__(self, base_url):
+        """
+        Initializes the ReservationApi with the base URL of the API.
+
+        :param base_url: The base URL of the API.
+        """
+        self.base_url = base_url
+
+    def create_reservation(self, payload):
+        """
+        Sends a POST request to create a reservation.
+
+        :param payload: The reservation data payload.
+        :return: The response from the API.
+        """
+        response = requests.post(f"{self.base_url}/api/reservations", json=payload)
+        return response
+
+    def retrieve_reservation(self, reservation_id):
+        """
+        Sends a GET request to retrieve a reservation by ID.
+
+        :param reservation_id: The ID of the reservation.
+        :return: The response from the API.
+        """
+        response = requests.get(f"{self.base_url}/api/reservations/{reservation_id}")
+        return response
+
+    def delete_reservation(self, reservation_id):
+        """
+        Sends a DELETE request to delete a reservation by ID.
+
+        :param reservation_id: The ID of the reservation.
+        :return: The response from the API.
+        """
+        response = requests.delete(f"{self.base_url}/api/reservations/{reservation_id}")
+        return response
