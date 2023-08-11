@@ -1,0 +1,33 @@
+trigger:
+- main
+
+pr: none 
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+jobs:
+- job: BuildAndTest
+  displayName: 'Build and Test'
+  steps:
+  - script: |
+      python -m venv venv
+      source venv/bin/activate
+      pip install -r requirements.txt
+      pytest
+    displayName: 'Install dependencies and run Python tests'
+
+- job: JMeterPerformanceTests
+  displayName: 'JMeter Performance Tests'
+  steps:
+  - script: |
+      wget -q https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.4.1.tgz
+      tar -xf apache-jmeter-5.4.1.tgz
+      export JMETER_HOME=$PWD/apache-jmeter-5.4.1
+
+      $JMETER_HOME/bin/jmeter -n -t /Users/geronimopalombo/Desktop/jmeter/API_Reservations_Perf.jmx -l jmeter-results.jtl
+    displayName: 'Run JMeter Performance Tests'
+
+- job: Deployment
+  displayName: 'Deployment'
+  steps:
